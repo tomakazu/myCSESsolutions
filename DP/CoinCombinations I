@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mod 1000000007
+int n,amount;
+int *ar = new int[100];
+int *d = new int[1000001]();
+ 
+int main(){
+	
+	cin>>n;
+	cin>>amount;
+	
+	for(int i=0;i<n;i++){
+		cin>>ar[i];
+	}
+	 
+	sort(ar,ar+n);
+	d[0] = 1;
+	
+	for(int amnt = ar[0];amnt<=amount;amnt++){
+		for(int coin = 0;coin<n&&ar[coin]<=amnt;coin++){
+			d[amnt] = (d[amnt]%mod + d[amnt-ar[coin]]%mod)%mod;
+		}
+	}
+	
+	
+	/*for(int i=0;i<=amount;i++){
+		cout<<d[i]<<" ";
+	}*/
+	
+	cout<<d[amount]<<endl;
+	return 0;
+}
