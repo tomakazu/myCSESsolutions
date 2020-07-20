@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mod 1000000007
+int n,amount;
+ 
+int *ar = new int[100];
+ 
+int main(){
+	
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+	cin>>n>>amount;
+	for(int i=0;i<n;i++){
+		cin>>ar[i];
+	}
+	int *dp = new int[1000001]();
+	sort(ar,ar+n);
+	dp[0] = 1;
+	for(int i=0;i<n;i++){
+		for(int j=ar[i];j<=amount;j++){
+			dp[j] = (dp[j]%mod + dp[j-ar[i]]%mod)%mod; 
+			
+		}
+	}
+	
+	cout<<dp[amount];
+	
+	return 0;
+}
