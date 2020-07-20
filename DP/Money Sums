@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+	
+	int n;
+	cin>>n;
+	int ar[n];
+	vector<int> sums;
+	set<int> visited ;
+	for(int i=0;i<n;i++){
+		cin>>ar[i];
+	}	
+	sort(ar,ar+n);
+	
+	visited.insert(ar[0]);
+	sums.push_back(ar[0]);
+	for(int i=1;i<n;i++){
+		
+			
+		int siz = sums.size();
+		
+		for(int j=0;j<siz;j++){
+			int s = ar[i]+sums[j];
+			if(!visited.count(s)){
+				sums.push_back(s);
+				visited.insert(s);
+		//		cout<<ar[i]<<" + "<<sums[j]<<endl;
+			}
+		}
+		
+		if(!visited.count(ar[i])){
+			visited.insert(ar[i]);
+			sums.push_back(ar[i]);
+		}
+		
+	}
+	cout<<sums.size()<<"\n";
+	sort(sums.begin(),sums.end());
+	for(int i=0;i<sums.size();i++){
+		cout<<sums[i]<<" ";
+	}
+ }
