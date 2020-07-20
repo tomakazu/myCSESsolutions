@@ -1,0 +1,43 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+ 
+int main(){
+	int n,x;
+	cin>>n>>x;
+	int ar[n];
+	for(int i=0;i<n;i++){
+		cin>>ar[i];
+	}
+	sort(ar,ar+n);
+	
+	int *dp = new int[x+1]();	
+	
+	for(int i=1;i<=x;i++){
+		dp[i] = -1;
+	}
+	
+	for(int i=0;i<n;i++){
+		for(int j = ar[i];j<=x;j++){
+			if(dp[j]==-1){
+				int rem = j - ar[i];
+				if(dp[rem]!=-1){
+					dp[j] = dp[rem] + 1;
+				}else{
+					dp[j] = -1;
+				}
+			}else{
+				int rem = j - ar[i];
+				if(dp[rem]==-1){
+					continue;
+				}else
+					dp[j] = min(dp[rem]+1,dp[j]);
+			}
+			
+		}
+	}
+	
+	cout<<dp[x];
+	
+	
+}
