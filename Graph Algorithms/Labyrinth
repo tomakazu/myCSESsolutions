@@ -1,0 +1,154 @@
+#include<bits/stdc++.h>
+using namespace std;
+char ma[1001][1001];
+int dist[1001][10001];
+pair<int,int> parent[1001][1001];
+int n,m;
+int x[] = {1,0,-1,0};
+int y[] = {0,1,0,-1};
+bool visited[1001][1001];
+char dir[] = {'D','R','U','L'};
+pair<int,int> start;
+vector<pair<int,int>> path; 
+bool isValid(int x_cord,int y_cord){
+	
+	if(x_cord>=n||y_cord>=m||x_cord<0||y_cord<0||ma[x_cord][y_cord]=='#'||visited[x_cord][y_cord]==true){
+		return false;
+	}
+	return true;
+}
+ 
+void bfs(){
+	
+	//Finding coordinates of start
+	
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(ma[i][j]=='A'){
+				start.first = i;
+				start.second = j;
+			}
+		}
+	}
+		
+	//Making a queue and applying bfs
+	
+	queue<pair<int,int>> q;
+	q.push(start);
+	
+	
+	while(!q.empty()){
+		
+		pair<int,int> coord = q.front();
+		visited[coord.first][coord.second] = true;
+		
+		if(ma[coord.first][coord.second]=='B'){
+			break;
+		}
+		
+		q.pop();
+		
+		
+		
+		for(int i=0;i<4;i++){
+			
+			
+			if(isValid(coord.first+x[i],coord.second+y[i])){
+				pair<int,int> temp;
+				temp.first = coord.first+x[i];
+				temp.second = coord.second+y[i];
+				q.push(temp);
+				parent[temp.first][temp.second] = coord; 
+				visited[temp.first][temp.second] = true;
+				dist[temp.first][temp.second] = dist[coord.first][coord.second]+1;
+				//cout<<temp.first<<" "<<temp.second<<endl;
+			}
+		}
+		
+		
+	}
+	
+}
+ 
+int main(){
+	
+	ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+ 	//freopen("test_input.txt","r",stdin);
+	cin>>n>>m;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>ma[i][j];
+		}
+	}
+	
+	bfs();	
+	
+	
+	
+	pair<int,int> end;
+ 
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(ma[i][j]=='B'){
+				end.first = i;
+				end.second = j;
+				break;
+			}
+		}
+	}
+	
+	if(dist[end.first][end.second]==0){
+		cout<<"NO"<<endl;
+	}
+	else{
+	cout<<"YES\n"<<dist[end.first][end.second]<<endl;
+	vector<char> p_directions;
+	
+	while(end!=start){
+			for(int i=0;i<4;i++){
+			
+			int d = dist[end.first+x[i]][end.second+y[i]];
+			if(ma[end.first+x[i]][end.second+y[i]]=='A'){
+				end.first += x[i];
+				end.second += y[i];
+				p_directions.push_back(dir[i]);
+				break;
+			}
+			else if(d==0){
+				continue;
+			}else if(d>dist[end.first][end.second]){
+				continue;
+			}else{
+				
+				end.first += x[i];
+				end.second += y[i]; 
+				p_directions.push_back(dir[i]);
+				break;
+			}
+			
+		}
+		
+				
+	}
+	
+	vector<char> directions;
+	for(int i=p_directions.size()-1;i>=0;i--){
+		directions.push_back(p_directions[i]);
+	}
+	int l = p_directions.size();
+	for(int i=0;i<l;i++){
+		if(directions[i]=='L')
+			cout<<"R";
+		else if(directions[i]=='R'){
+			cout<<"L";
+		}else if(directions[i]=='U'){
+			cout<<"D";
+		}else{
+			cout<<"U";
+			}
+		}	
+	}
+	
+	return 0;
+}
