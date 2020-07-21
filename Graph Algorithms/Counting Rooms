@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool visited[1000][1000];
+int n,m,count1=0;
+char maze[1000][1000];
+ 
+bool isValid(int x,int y){
+	if(x<0||y<0||x>=n||y>=m){
+		return false;
+	}
+	else if(maze[x][y]=='#')
+		return false;
+	if(visited[x][y]){
+		return false;
+	}
+	return true;	
+}
+ 
+int x[] = {0,1,-1,0};
+int y[] = {-1,0,0,1};
+ 
+void dfs(int i,int j){
+	
+	visited[i][j] = true;
+	for(int k=0;k<4;k++){
+		if(isValid(x[k]+i,y[k]+j))
+			dfs(x[k]+i,y[k]+j);
+	}
+	
+}
+int main(){
+	
+	cin>>n>>m;
+	
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cin>>maze[i][j];
+		}
+	}
+	
+	
+	for(int i=0;i<n;i++){
+		for(int j = 0;j<m;j++){
+			if(maze[i][j] == '#'){
+				continue;
+			}else if(visited[i][j]){
+				continue;
+			}else{
+				count1++;		
+				dfs(i,j);
+				
+			}
+		}
+	}
+	cout<<count1;
+}
