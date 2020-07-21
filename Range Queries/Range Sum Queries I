@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+ 
+ll ar[200001];
+ll Bit[200001];
+ll n,q;
+void update(ll val,ll i){
+	
+	while(i<=n){
+		Bit[i]+=val;
+		i+=(i&(-i));
+	}
+}
+ 
+ll getSum(ll r){
+	
+	ll val = 0;
+	while(r>0){
+		val+=Bit[r];
+		r-= (r&(-r));
+	}
+	return val;
+}
+ 
+int main(){
+	
+	
+	cin>>n>>q;
+	
+	for(ll i=1;i<=n;i++){
+		cin>>ar[i];
+	}
+	for(ll i=1;i<=n;i++){
+		update(ar[i],i);	
+	}
+	
+	
+	while(q--){
+		ll l,r;
+		cin>>l>>r;
+		cout<<getSum(r)-getSum(l-1)<<"\n";
+	}
+	
+}
