@@ -1,0 +1,67 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+ 
+ll n,m;
+vector<ll> conn[100001];
+ 
+void bfs(){
+	
+	queue<ll> q1;
+	bool *visited = new bool[n+1]();
+	q1.push(1);
+	ll *distance = new ll[n+1]();
+	ll *parent = new ll[n+1]();
+	distance[1] = 1;
+	parent[1] = 1;
+	while(!q1.empty()){
+		ll start = q1.front();
+		q1.pop();
+		visited[start] = true;
+		for(int i=0;i<conn[start].size();i++){
+			if(!visited[conn[start][i]]){
+				q1.push(conn[start][i]);
+				distance[conn[start][i]] = distance[start]+1;
+				visited[conn[start][i]] = true;
+				parent[conn[start][i]] = start;
+				}
+			}	
+		
+	}
+	if(distance[n]!=0){
+		
+		cout<<distance[n]<<"\n";
+		vector<ll> route;
+		ll j = n;
+		route.push_back(j);
+		while(parent[j]!=1){
+			route.push_back(parent[j]);
+			j = parent[j];
+		}
+		reverse(route.begin(),route.end());
+		cout<<"1 ";
+		for(int i=0;i<route.size();i++){
+			cout<<route[i]<<" ";
+		}
+			
+	}else{
+		cout<<"IMPOSSIBLE";
+	}
+	
+ 
+}
+ 
+int main(){
+		
+	cin>>n>>m;
+	while(m--){
+		ll a,b;
+		cin>>a>>b;
+		conn[a].push_back(b);
+		conn[b].push_back(a);
+	}	
+	
+	bfs();
+		
+	return 0;	
+}
