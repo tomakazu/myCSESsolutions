@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+ll n,k;
+ll *ar = new ll[200001]();
+ll *tree = new ll[200001]();
+
+void construct(ll val,ll i){
+	while(i<=n){
+		tree[i]+= val;
+		i+= i&(-i);
+	}
+}
+
+ll query(ll l){
+	
+	ll sum = 0;
+	while(l>0){
+		sum+=tree[l];
+		l-= l&(-l);
+	}
+	return sum;
+}
+
+void update(ll index,ll val){
+	ll temp = index;
+	while(index<=n){
+		tree[index]-= ar[temp];
+		tree[index]+= val;
+		index+= (index&(-index));
+	}
+	
+}
+
+int main(){
+	
+		
+	cin>>n>>k;
+	for(ll i=1;i<=n;i++){
+		cin>>ar[i];
+	}		
+	//Construct fenwick tree
+	for(ll i=1;i<=n;i++){
+		construct(ar[i],i);
+	}
+	while(k--){
+		ll t,l,r;
+		cin>>t>>l>>r;
+		if(t==2){
+			cout<<query(r)-query(l-1)<<"\n";
+		}else{
+			update(l,r);
+			ar[l] = r;
+		}
+	}		
+	return 0;	
+}
