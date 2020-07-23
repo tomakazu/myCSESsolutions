@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+#define block 447
+ll n,q;
+ll ar[200001];
+ll sq[448];
+
+ll getXor(ll l,ll r){
+	
+	ll lb = l/block;
+	ll rb = r/block;
+	ll ans = 0;
+	if(lb==rb){
+		for(ll i=l;i<=r;i++){
+			ans = ar[i]^ans;
+		}
+	}else{
+		
+		for(ll i=l;i<(lb+1)*block;i++){
+			ans = ans^ar[i];
+		}
+		for(ll i=lb+1;i<rb;i++){
+			ans = ans^sq[i];
+		}
+		for(ll i=(rb*block);i<=r;i++){
+			ans = ans^ar[i];
+		}
+	}
+	
+	return ans;
+}
+
+
+int main(){
+	
+	cin>>n>>q;
+	for(int i=0;i<n;i++){
+		cin>>ar[i];
+	}
+	//Ceate sq array
+	ll blk_index=-1;
+	ll p_xor = 0;
+	for(int i=0;i<n;i++){
+		
+		if(i%block==0){
+			blk_index++;
+			p_xor = 0;
+		}
+		sq[blk_index] = p_xor^ar[i];
+		p_xor = p_xor^ar[i];
+	}
+	while(q--){
+		ll l,r;
+		cin>>l>>r;
+		l--,r--;
+		
+		cout<<getXor(l,r)<<"\n";	
+	}
+	
+	
+}
